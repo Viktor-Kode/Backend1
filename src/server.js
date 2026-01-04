@@ -55,6 +55,18 @@
     
 // })
 
+// app.use(express.json());
+
+// app.post('/join-gym', (req, res) => {
+//   const name = req.body.name;
+//   const goal = req.body.goal;
+
+//   // Use res.json to send the data back to Thunder Client
+//   res.json({
+//     message: `Welcome viktor`,
+//     pl: `We will help you marathon`
+//   });
+// });an
 
 
 
@@ -76,24 +88,21 @@
 //   console.log(`testing port at${PORT}`);
   
 // })
+// import login from './routes/login.js';
+// const app = express();
+// app.use(express.json())
+//  app.use('/', login)
 
 import express from 'express'
-const app = express();
+import route from './routes/userRoutes.js';
 
+const app = express();
 app.use(express.json());
 
-app.post('/join-gym', (req, res) => {
-  const name = req.body.name;
-  const goal = req.body.goal;
+app.use('/user', route)
 
-  // Use res.json to send the data back to Thunder Client
-  res.json({
-    message: `Welcome viktor`,
-    plan: `We will help you marathon`
-  });
-});
 
 const PORT = 5001;
 app.listen(PORT,()=>{
-  console.log(`testing port at${PORT}`)
+  console.log(`testing port at ${PORT}`)
 })
