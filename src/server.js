@@ -93,16 +93,31 @@
 // app.use(express.json())
 //  app.use('/', login)
 
-import express from 'express'
-import route from './routes/userRoutes.js';
+// import express from 'express'
+// import route from './routes/userRoutes.js';
 
+// const app = express();
+// app.use(express.json());
+
+// app.use('/user', route)
+
+
+// const PORT = 5001;
+// app.listen(PORT,()=>{
+//   console.log(`testing port at ${PORT}`)
+// })
+
+
+import express from "express";
+import route from "./routes/userRoutes.js";
 const app = express();
-app.use(express.json());
 
-app.use('/user', route)
+app.use(express.json())
 
+app.use('/user', route )
 
 const PORT = 5001;
-app.listen(PORT,()=>{
-  console.log(`testing port at ${PORT}`)
+app.listen(PORT, ()=>{
+  console.log(`we live at port ${PORT}`);
+  
 })
