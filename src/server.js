@@ -109,7 +109,7 @@
 
 
 import express from "express";
-import route from "./routes/userRoutes.js";
+import route from './routes/userRoutes.js'
 const app = express();
 
 app.use(express.json())
@@ -121,3 +121,4 @@ app.listen(PORT, ()=>{
   console.log(`we live at port ${PORT}`);
   
 })
+
