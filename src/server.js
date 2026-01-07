@@ -110,11 +110,20 @@
 
 import express from "express";
 import route from './routes/userRoutes.js'
+import mongoose from "mongoose";
 const app = express();
-
 app.use(express.json())
 
 app.use('/user', route )
+const Mongo_URI = 'mongodb+srv://victorand804_db_user:%25j%24qY5S26H3Bf%24h@cluster0.lf0rolp.mongodb.net/gymDB?retryWrites=true&w=majority';
+
+mongoose.connect(Mongo_URI).then(()=>{
+  console.log('✅ Database is holding hands with the Server');
+  
+}).catch((err)=>{
+  console.error("❌ Database connection failed:", err.message);
+  
+})
 
 const PORT = 5001;
 app.listen(PORT, ()=>{
