@@ -111,6 +111,7 @@
 import express from "express";
 import route from './routes/userRoutes.js'
 import mongoose from "mongoose";
+import errorHandler from ".././middleware/errorHandler.js"
 const app = express();
 app.use(express.json())
 
@@ -125,7 +126,9 @@ mongoose.connect(Mongo_URI).then(()=>{
   
 })
 
+
 const PORT = 5001;
+app.use(errorHandler)
 app.listen(PORT, ()=>{
   console.log(`we live at port ${PORT}`);
   
