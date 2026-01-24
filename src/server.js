@@ -109,7 +109,7 @@
 
 
 import express from "express";
-import route from './routes/userRoutes.js'
+import route from './routes/login.js'
 import mongoose from "mongoose";
 import errorHandler from ".././middleware/errorHandler.js"
 const app = express();
