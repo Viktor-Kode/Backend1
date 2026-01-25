@@ -134,22 +134,22 @@
 //       })
 //   }
 // // }
-// export const fetch = async (req, res)=>{
-//   try{
-//     const usersData = await user.find()
+export const fetch = async (req, res)=>{
+  try{
+    const usersData = await user.find()
 
-//     if(usersData.length === 0){
-//       res.status(202).json({
-//         message: "no data found"
-//       })
-//     }
-//     res.status(202).json(usersData)
-//   }catch (err){
-//     res.status(401).json({
-//       message: err.message
-//     })
-//   }
-// }
+    if(usersData.length === 0){
+      res.status(202).json({
+        message: "no data found"
+      })
+    }
+    res.status(202).json(usersData)
+  }catch (err){
+    res.status(401).json({
+      message: err.message
+    })
+  }
+}
 // export const findId = async (req, res)=>{
 //   try{
 //      const {id} = req.params;
@@ -197,75 +197,86 @@
 // }
 // }
 
-// export const create= async ( req, res, next)=>{
-//   try{
-//     const {name, email, password} = req.body
+export const create= async ( req, res, next)=>{
+  try{
+    const {name, email, password} = req.body
     
-//     const salt = await bcrypt.genSalt(10);
-//     const hashedPAssword = await bcrypt.hash(password, salt)
+    const salt = await bcrypt.genSalt(10);
+    const hashedPAssword = await bcrypt.hash(password, salt)
 
-//     const newUser = await user.create({
-//       name,
-//       email,
-//       password: hashedPAssword
-//     });
-//     res.json(newUser)
-//   }catch(error){
-//     next(error)
-//   }
-// }
+    const newUser = await user.create({
+      name,
+      email,
+      password: hashedPAssword
+    });
+    res.json(newUser)
+  }catch(error){
+    next(error)
+  }
+}
 
-// export const login = async(req, res, next)=>{
-//   try{
-//     const {email, password}= req.body
-
-//     const user = await User.findOne({ email })
-//     if (!user) {
-//       const error = new error("user not found");
-//       error.status= 404
-//       return next(error)
-//     }
-
-//     const isMatch = await bcrypt.compare(password, user.password);
-
-//     if(!isMatch){
-//       const err = new err("wrong password")
-//       err.status = 401;
-//       return next(err)
-//     }
-//     // 5. Success
-//         res.status(200).json({ 
-//             message: "Credentials verified. The person is who they say they are." 
-//         });
-//   }catch(err){
-//     next(error);
-//   }
-// } 
-
-
-import user from "../models/Book.js"
-import bycrpt from "bcrypt"
-
-export const userLogin =async (req, res, next)=>{
+export const login = async(req, res, next)=>{
   try{
     const {email, password}= req.body
-    const findUser =await user.findOne({email});
+
+    const user = await User.findOne({ email })
+    if (!user) {
+      const error = new error("user not found");
+      error.status= 404
+      return next(error)
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password);
+
+    if(!isMatch){
+      const err = new err("wrong password")
+      err.status = 401;
+      return next(err)
+    }
+    // 5. Success
+        res.status(200).json({ 
+            message: "Credentials verified. The person is who they say they are." 
+        });
+  }catch(err){
+    next(error);
+  }
+} 
+
+import User from "../models/Book.js";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken"; // 1. Add this import at the top
+
+export const userLogin = async (req, res, next) => {
+  try {
+    const { email, password } = req.body;
+    const findUser = await User.findOne({ email });
 
     if (!findUser) {
-      res.json(401).json({
-        message: "Invalid Credentials"
-      })
+      return res.status(401).json({ message: "Invalid Credentials" });
     }
 
-    const passwordMatch = await bycrpt.compare(password, user.password);
+    const passwordMatch = await bcrypt.compare(password, findUser.password);
 
-    if (!passwordMatch){
-      res.status(401).json({
-        message: "Invalid email or password"
-      })
+    if (!passwordMatch) {
+      return res.status(401).json({ message: "Invalid email or password" });
     }
-    res.status(200).json({ message: "Identity Verified! You are who you say you are." });
-  }catch(err){
-    next(err)
+
+    // --- NEW STUFF STARTS HERE ---
+    
+    // 2. Create the "Ticket" (The JWT)
+    const token = jwt.sign(
+      { id: findUser._id },      // Payload: What's inside the ticket
+      process.env.JWT_SECRET,    // The Secret Stamp
+      { expiresIn: "1h" }        // How long the ticket lasts
+    );
+
+    // 3. Send the ticket back to the user
+    res.status(200).json({ 
+      message: "Login Successful!",
+      token: token               // This long string is their ticket
+    });
+
+  } catch (err) {
+    next(err);
   }
 }

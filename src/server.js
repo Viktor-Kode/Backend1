@@ -109,12 +109,13 @@
 
 
 import express from "express";
-import route from './routes/login.js'
+import route from './routes/userRoutes.js'
 import mongoose from "mongoose";
 import errorHandler from ".././middleware/errorHandler.js"
+import dotenv from "dotenv";
 const app = express();
 app.use(express.json())
-
+dotenv.config();
 app.use('/user', route )
 const Mongo_URI = 'mongodb+srv://victorand804_db_user:%25j%24qY5S26H3Bf%24h@cluster0.lf0rolp.mongodb.net/gymDB?retryWrites=true&w=majority';
 
@@ -133,4 +134,5 @@ app.listen(PORT, ()=>{
   console.log(`we live at port ${PORT}`);
   
 })
+
 
