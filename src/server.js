@@ -117,7 +117,7 @@ const app = express();
 app.use(express.json())
 dotenv.config();
 app.use('/user', route )
-const Mongo_URI = 'mongodb+srv://victorand804_db_user:%25j%24qY5S26H3Bf%24h@cluster0.lf0rolp.mongodb.net/gymDB?retryWrites=true&w=majority';
+const Mongo_URI = "mongodb+srv://victorand804_db_user:%j$qY5S26H3Bf$h@cluster0.lf0rolp.mongodb.net/JWT_Practice?retryWrites=true&w=majority";
 
 mongoose.connect(Mongo_URI).then(()=>{
   console.log('✅ Database is holding hands with the Server');
