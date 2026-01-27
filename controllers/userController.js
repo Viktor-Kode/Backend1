@@ -266,7 +266,7 @@ export const userLogin = async (req, res, next) => {
     // 2. Create the "Ticket" (The JWT)
     const token = jwt.sign(
       { id: findUser._id },      // Payload: What's inside the ticket
-      process.env.JWT_SECRET,    // The Secret Stamp
+      victor_SECRET_123,    // The Secret Stamp
       { expiresIn: "1h" }        // How long the ticket lasts
     );
 
